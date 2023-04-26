@@ -1,0 +1,44 @@
+# Install Packages and Load Data
+```{r}
+library(tidyverse)
+library(readxl)
+library(plotly)
+library(hrbrthemes)
+library(lubridate)
+Follower_metrics <- read_excel("LinkedIn_followers.xlsx", sheet = "New followers")
+Follower_location <- read_excel("LinkedIn_followers.xlsx", sheet = "Location")
+Follower_function <- read_excel("LinkedIn_followers.xlsx", sheet = "Job function")
+Follower_seniority <- read_excel("LinkedIn_followers.xlsx", sheet = "Seniority")
+Follower_industry <- read_excel("LinkedIn_followers.xlsx", sheet = "Industry")
+Follower_size <- read_excel("LinkedIn_followers.xlsx", sheet = "Company size")
+
+Visitor_metrics <-  read_excel("LinkedIn_visitors.xlsx", sheet = "Visitor metrics")
+Visitor_location <-  read_excel("LinkedIn_visitors.xlsx", sheet = "Location")
+Visitor_function <-  read_excel("LinkedIn_visitors.xlsx", sheet = "Job function")
+Visitor_seniority <-  read_excel("LinkedIn_visitors.xlsx", sheet = "Seniority")
+Visitor_industry <-  read_excel("LinkedIn_visitors.xlsx", sheet = "Industry")
+Visitor_size <- read_excel("LinkedIn_visitors.xlsx", sheet = "Company size")
+```
+# Visitor metrics
+```{r}
+str(Visitor_metrics)
+#Comparing Total Page Views - Desktop vs. Mobile
+Visitor_metrics$Date <- as.Date(Visitor_metrics$Date, format = "%m/%d/%Y")
+p_desktop <- Visitor_metrics %>%
+  ggplot(aes(x=Date, y=`Total page views (desktop)`)) +
+    geom_area(fill="#69b3a2", alpha=0.5) +
+    geom_line(color="#69b3a2") +
+    ylab("Total Page Views") +
+    labs(title="Desktop Total Page Views") +
+    theme_ipsum()
+p_desktop <- ggplotly(p_desktop)
+p_desktop
+p_mobile <- Visitor_metrics %>%
+  ggplot(aes(x=Date, y=`Total page views (mobile)`)) +
+    geom_area(fill="sienna1", alpha=0.5) +
+    geom_line(color="sienna1") +
+    ylab("Total Page Views") +
+    labs(title="Mobile Total Page Views") +
+    theme_ipsum()
+p_mobile <- ggplotly(p_mobile)
+p_mobile
